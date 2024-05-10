@@ -1,0 +1,5 @@
+RedisEventBus/obj/
+RedisEventBus/bin/
+RedisEventBusTests/obj/
+.vs/
+RedisEventBusTests/bin/
