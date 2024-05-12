@@ -1,4 +1,4 @@
-﻿namespace RedisEventBus.Vinscom.RedisEventBus.Service
+﻿namespace RedisEventBus.Service
 {
     public class EventProcessingException : Exception
     {

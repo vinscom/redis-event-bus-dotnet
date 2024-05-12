@@ -1,13 +1,12 @@
 ﻿using JT.Common.Service;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using RedisEventBus.Vinscom.RedisEventBus.Events;
+using RedisEventBus.Events;
 using StackExchange.Redis;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Text;
 
-namespace RedisEventBus.Vinscom.RedisEventBus.Service
+namespace RedisEventBus.Service
 {
     public partial class RedisEventBus : IEventBus
     {
@@ -27,18 +26,7 @@ namespace RedisEventBus.Vinscom.RedisEventBus.Service
             configurationOptions.BacklogPolicy = BacklogPolicy.FailFast;
 
             ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(configurationOptions);
-
-            redis.ConnectionFailed += (sender, e) => _logger?.LogError(e.Exception, "-----> Connection Failed");
-            redis.ConnectionRestored += (sender, e) => _logger?.LogInformation("-----> Connection Restored");
-            redis.ErrorMessage += (sender, e) => _logger?.LogError("-----> " + e.Message);
-            redis.InternalError += (sender, e) => _logger?.LogError(e.Exception, "-----> Internal Error");
-            redis.ConfigurationChanged += (sender, e) => _logger?.LogInformation("-----> Configuration Changed");
-            redis.HashSlotMoved += (sender, e) => _logger?.LogInformation("-----> Hash Slot Moved");
-            redis.ConfigurationChangedBroadcast += (sender, e) => _logger?.LogInformation("-----> Configuration Changed Broadcast");
-            redis.ServerMaintenanceEvent += (sender, e) => _logger?.LogInformation("-----> Server Maintenance Event");
-
             _redisdb = redis.GetDatabase();
-
         }
 
         public async Task<string> PublishAsync<T>(string topic, ServiceEvent<T> auditEvent, int topicLength = IEventBus.DEFAULT_TOPIC_MAXLEN) where T : IServiceEventData, new()
@@ -115,7 +103,7 @@ namespace RedisEventBus.Vinscom.RedisEventBus.Service
                       t => t,
                       t => t.Next());
 
-            messagePendingGenerator                .Concat(messageGenerator)
+            messagePendingGenerator.Concat(messageGenerator)
                 .SubscribeOn(NewThreadScheduler.Default)
                 .Do(async t =>
                 {

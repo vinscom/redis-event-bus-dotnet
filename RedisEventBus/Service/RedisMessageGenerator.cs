@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
-namespace RedisEventBus.Vinscom.RedisEventBus.Service
+namespace RedisEventBus.Service
 {
     internal class RedisMessageGenerator
     {

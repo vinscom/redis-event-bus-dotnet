@@ -1,8 +1,8 @@
-﻿using RedisEventBus.Vinscom.RedisEventBus.Events;
+﻿using RedisEventBus.Events;
 using System.IO.Compression;
 using System.Text;
 
-namespace RedisEventBus.Vinscom.RedisEventBus.Service
+namespace RedisEventBus.Service
 {
     public interface IEventBus
     {

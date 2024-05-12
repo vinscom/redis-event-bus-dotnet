@@ -1,4 +1,4 @@
-﻿namespace RedisEventBus.Vinscom.RedisEventBus.Events
+﻿namespace RedisEventBus.Events
 {
     public class ServiceEvent<T> where T : IServiceEventData, new()
     {
